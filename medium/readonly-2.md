@@ -25,5 +25,20 @@ todo.completed = true // OK
 Решение
 
 ```ts
-// in progress
+type MyReadonly2<T, K = ''> = {
+    readonly [P in keyof T as K extends keyof T
+        ? P extends K
+            ? P
+            : never
+        : P]: T[P];
+} &
+    {
+        [P in keyof T as K extends keyof T
+            ? P extends K
+                ? never
+                : P
+            : P extends K
+            ? P
+            : P]: T[P];
+    };
 ```

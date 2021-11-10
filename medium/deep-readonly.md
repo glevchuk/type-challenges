@@ -1,0 +1,53 @@
+Необходимо реализовать дженерик `DeepReadonly`, который рекурсивно проставит модификатор `readonly` для всех полей объекта.
+
+Пример
+
+```ts
+// Исходный тип
+type X = {
+  a: () => 22
+  b: string
+  c: {
+    d: boolean
+    e: {
+      g: {
+        h: {
+          i: true
+          j: 'string'
+        }
+        k: 'hello'
+      }
+    }
+  }
+}
+
+// Конечный тип
+type Expected = {
+  readonly a: () => 22
+  readonly b: string
+  readonly c: {
+    readonly d: boolean
+    readonly e: {
+      readonly g: {
+        readonly h: {
+          readonly i: true
+          readonly j: 'string'
+        }
+        readonly k: 'hello'
+      }
+    }
+  }
+}
+```
+
+Решение
+
+```ts
+type DeepReadonly<T> = {
+  readonly [P in keyof T]: T[P] extends Function
+    ? T[P]
+    : T[P] extends Record<string, any>
+    ? DeepReadonly<T[P]>
+    : T[P];
+};
+```

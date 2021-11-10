@@ -24,9 +24,11 @@ interface Result {
 Решение
 
 ```ts
-// Пока не могу придумать, как решить, думаю пойти в эту сторону, но это не точно:
-type Chainable<K, V, R> = {
-  option(key: K, value: V): Chainable<>
-  get(): R
-}
+type Chainable<R = {}> = {
+  option<K extends string, V>(
+    key: `${K & string}`,
+    value: V
+  ): Chainable<R & { [P in K]: V }>;
+  get(): R;
+};
 ```

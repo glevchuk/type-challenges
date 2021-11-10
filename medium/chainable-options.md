@@ -26,7 +26,7 @@ interface Result {
 ```ts
 type Chainable<R = {}> = {
   option<K extends string, V>(
-    key: `${K & string}`,
+    key: K,
     value: V
   ): Chainable<R & { [P in K]: V }>;
   get(): R;
